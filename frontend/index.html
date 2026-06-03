@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickBites | Delicious Food Delivered</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+
+    <nav class="bg-white shadow-xs sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <span class="text-2xl font-black text-orange-600 tracking-tight">QuickBites.</span>
+            <div class="flex space-x-4">
+                <span class="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full">📍 Cape Town</span>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-gradient-to-r from-orange-500 to-red-600 text-white py-12 px-4 text-center">
+        <h1 class="text-4xl font-extrabold mb-2">Your Favorite Local Restaurants</h1>
+        <p class="text-lg text-orange-100">Order from the best bistros around you</p>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div id="loading" class="text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-orange-500 border-t-transparent"></div>
+            <p class="text-gray-500 mt-2 font-medium">Fetching nearby restaurants...</p>
+        </div>
+
+        <div id="restaurants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
+            </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
