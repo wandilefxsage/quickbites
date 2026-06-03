@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Initialize Supabase Client using your online Vercel variables
+// Initialize Supabase Client using your environment variables
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -21,12 +21,20 @@ app.get('/', (req, res) => {
   res.json({ message: 'QuickBites API is up and running smoothly!' });
 });
 
-// 2. The Restaurants Route for fetching your database rows
+// 2. The Restaurants Route (Fetches restaurants AND their nested menu items)
 app.get('/api/restaurants', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('restaurants')
-      .select('*');
+      .select(`
+        *,
+        menu_items (
+          id,
+          name,
+          description,
+          price_cents
+        )
+      `);
 
     if (error) throw error;
 
