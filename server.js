@@ -1,32 +1,41 @@
 import express from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
-import morgan from 'morgan';
-import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import { createClient } from '@supabase/supabase-js';
 
-// Initialize app
+dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Security and utility middleware
-app.use(helmet());
 app.use(cors());
-app.use(morgan('dev'));
 app.use(express.json());
 
-// Initialize Supabase Client using the service_role key for admin access
-// REPLACE these placeholder strings with your actual Supabase keys
-const supabase = createClient(
-  'https://qgvjrcqaavwascmdlasw.supabase.co', //  https://qgvjrcqaavwascmdlasw.supabase.co/rest/v1/
-  'your-actual-service-role-key-here'        // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFndmpyY3FhYXZ3YXNjbWRsYXN3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDMyNDM5MywiZXhwIjoyMDk1OTAwMzkzfQ.u4aRXgn87qOlWNThBQAHlCVoxSTl7PhFNWJnk003cGY
-);
+// Initialize Supabase Client using your online Vercel variables
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Sample Health Route
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'Backend server is active and running' });
+// 1. Base Homepage Route (Fixes the "Cannot GET /" error)
+app.get('/', (req, res) => {
+  res.json({ message: 'QuickBites API is up and running smoothly!' });
+});
+
+// 2. The Restaurants Route for fetching your database rows
+app.get('/api/restaurants', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('restaurants')
+      .select('*');
+
+    if (error) throw error;
+
+    res.json(data); 
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
