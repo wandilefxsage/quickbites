@@ -1,7 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-const { createClient } = require('@supabase/supabase-js');
-require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import { createClient } from '@supabase/supabase-js';
+import dotenv from 'dotenv';
+
+// Initialize environment variables
+dotenv.config();
 
 const app = express();
 
@@ -16,7 +19,7 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// 1. Base Homepage Route (Fixes the "Cannot GET /" error)
+// 1. Base Homepage Route
 app.get('/', (req, res) => {
     res.json({ message: "QuickBites API is up and running smoothly!" });
 });
